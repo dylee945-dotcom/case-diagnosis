@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', sans-serif;
+    background-color: #f5f6f8;
+    color: #0b1a3b;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #f5f6f8;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* Card */
+  .card {
+    @apply bg-white border border-card-border rounded-2xl p-6 shadow-card;
+  }
+  .card-sm {
+    @apply bg-white border border-card-border rounded-xl p-4 shadow-card;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply bg-navy-900 hover:bg-navy-700 text-white font-semibold
+           px-6 py-3 rounded-xl transition-all duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* Secondary button */
+  .btn-secondary {
+    @apply bg-white hover:bg-navy-50 text-navy-900 font-medium
+           border border-card-border hover:border-navy-300
+           px-5 py-2.5 rounded-xl transition-all duration-150;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply text-navy-600 hover:text-navy-900 font-medium
+           underline underline-offset-2 transition-colors;
+  }
+
+  /* Answer option button */
+  .answer-btn {
+    @apply w-full text-left px-5 py-4 rounded-xl
+           border-2 border-card-border bg-white
+           hover:border-navy-400 hover:shadow-card
+           transition-all duration-150 cursor-pointer;
+  }
+  .answer-btn.selected {
+    @apply border-navy-900 bg-navy-50;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply text-xs font-semibold text-navy-400 uppercase tracking-widest mb-3;
+  }
+
+  /* Left-accented card */
+  .card-accent {
+    @apply bg-white border border-card-border border-l-4 border-l-navy-900
+           rounded-2xl p-6 shadow-card;
+  }
+
+  /* Risk text colors (no backgrounds, no emojis) */
+  .risk-critical { @apply text-red-700 font-semibold; }
+  .risk-high { @apply text-orange-700 font-semibold; }
+  .risk-medium { @apply text-amber-700 font-semibold; }
+  .risk-low { @apply text-green-700 font-semibold; }
+
+  /* Risk bar track */
+  .risk-track {
+    @apply h-2 bg-slate-200 rounded-full overflow-hidden;
+  }
+
+  /* Stage badge base */
+  .stage-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1.5
+           rounded-full text-xs font-semibold;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Blur mask for document preview */
+  .blur-fade {
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+}
