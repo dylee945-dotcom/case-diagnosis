@@ -41,6 +41,7 @@ const ACCUSED_DOCS = [
     id: 'opinion',
     label: '변호인 의견서',
     warning: '구성요건 다툼 포인트가 잘못 기재되면 오히려 불리한 자료로 작용할 수 있습니다.',
+    hideWarning: true,
     preview: '피의자 ○○○에 대한 혐의와 관련하여 다음과 같이 의견을 제출합니다.\n\n1. 사건의 개요\n2. 구성요건 검토...',
   },
 ]
@@ -80,7 +81,7 @@ function OverallRiskSummary({ crimes, answers }: { crimes: CrimeType[]; answers:
       <div className="flex items-end justify-between gap-3 mb-3">
         <div>
           <div className={`text-base font-bold ${meta.text}`}>
-            유사 사건 대비 <span className="text-xl">{meta.label}</span> 위험 구간
+            유사 사건 대비 <span className="text-xl">{meta.desc}</span>
           </div>
           <div className="text-sm text-navy-600 mt-0.5">답변하신 내용을 기준으로 산출했습니다</div>
         </div>
@@ -222,14 +223,16 @@ function DocumentsSection({ isVictim }: { isVictim: boolean }) {
               <span className="text-xs bg-white border border-card-border text-navy-500 px-2 py-0.5 rounded-full">초안</span>
             </div>
             <div className="relative overflow-hidden max-h-20">
-              <div className="px-4 pt-3 pb-1 font-mono text-xs text-navy-600 leading-relaxed whitespace-pre-line bg-white">
+              <div className="px-4 pt-3 pb-1 font-mono text-xs text-navy-600 leading-relaxed whitespace-pre-line bg-white text-left">
                 {doc.preview}
               </div>
               <div className="blur-fade absolute inset-0 bg-gradient-to-b from-transparent to-white" />
             </div>
-            <div className="mx-3 mt-2 mb-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
-              <p className="text-xs text-amber-800 leading-relaxed">주의 — {doc.warning}</p>
-            </div>
+            {!doc.hideWarning && (
+              <div className="mx-3 mt-2 mb-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
+                <p className="text-xs text-amber-800 leading-relaxed">주의 — {doc.warning}</p>
+              </div>
+            )}
             <div className="px-3 pb-3">
               <a
                 href={CONSULT_URL}
@@ -294,13 +297,6 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-navy-900">진단 결과</h2>
         <button onClick={onReset} className="btn-ghost text-sm">처음부터</button>
-      </div>
-
-      {/* Top disclaimer */}
-      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 mb-4">
-        <p className="text-xs text-amber-800 leading-relaxed">
-          <span className="font-bold">⚠ 참고 자료</span> — 이 진단 결과는 일반적인 정보 제공 목적이며 법률 자문이 아닙니다. 실제 결과는 사건의 구체적 사실관계에 따라 크게 달라집니다.
-        </p>
       </div>
 
       {/* Crime headers — shown immediately after title */}
@@ -405,7 +401,7 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
 
       {/* Footer */}
       <div className="card-sm text-xs text-navy-500 leading-relaxed mb-4">
-        <span className="font-bold text-navy-700">⚠ 법적 면책 고지</span> — 이 진단 결과는 입력된 정보를 토대로 생성된 참고 자료이며, 법률 자문이 아닙니다. 본 결과의 정확성·완전성에 대하여 어떠한 법적 책임도 부담하지 않습니다. 실제 법적 결과는 사건의 구체적 사실관계, 증거, 법원 재량에 따라 크게 달라질 수 있으므로, 이 결과만을 근거로 어떠한 법적 결정도 내리지 마시기 바랍니다. 반드시 변호사와 직접 상담하여 구체적인 법률 조언을 받으시기 바랍니다.
+        이 결과는 참고용이며 법률 자문이 아닙니다. 실제 결과는 사건에 따라 크게 달라집니다.
       </div>
 
       <button onClick={onReset} className="btn-secondary w-full">
