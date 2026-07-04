@@ -77,14 +77,14 @@ function OverallRiskSummary({ crimes, answers }: { crimes: CrimeType[]; answers:
   return (
     <div className={`rounded-2xl border p-5 mb-5 ${meta.bg} ${meta.border}`}>
       <div className="section-label">종합 리스크 요약</div>
-      <div className="flex items-end justify-between gap-3 mb-3">
+      <div className="flex items-center justify-between gap-3 mb-3">
         <div>
           <div className={`text-base font-bold ${meta.text}`}>
             유사 사건 대비 <span className="text-xl">{meta.label}</span> 위험 구간
           </div>
           <div className="text-sm text-navy-600 mt-0.5">답변하신 내용을 기준으로 산출했습니다</div>
         </div>
-        <div className={`text-4xl font-black ${meta.text} flex-shrink-0 leading-none`}>{meta.label}</div>
+        <div className={`text-3xl font-black ${meta.text} flex-shrink-0 leading-none`}>{meta.label}</div>
       </div>
       <div className="flex flex-wrap gap-3">
         {([3, 2, 1, 0] as RiskLevel[]).map((l) => {
@@ -251,8 +251,8 @@ function DocumentsSection({ isVictim }: { isVictim: boolean }) {
 function ConsultationCTA({ role }: { role: Role | null }) {
   const isVictim = role === 'victim'
   return (
-    <div className="bg-navy-900 rounded-2xl p-6 mb-6 text-white">
-      <div className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
+    <div className="bg-navy-900 rounded-2xl p-5 mb-6 text-white">
+      <div className="text-xs font-semibold uppercase tracking-widest mb-2.5" style={{ color: 'rgba(255,255,255,0.45)' }}>
         변호사 상담
       </div>
       <h3 className="text-lg font-bold mb-2">
@@ -260,7 +260,7 @@ function ConsultationCTA({ role }: { role: Role | null }) {
           ? '지금 바로 변호사와 상담하세요'
           : '지금 상황을 변호사와 함께 점검하세요'}
       </h3>
-      <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.65)' }}>
+      <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
         {isVictim
           ? '신고 방법부터 증거 확보, 피해자 지원 제도까지 — 첫 상담에서 모두 안내해 드립니다.'
           : '진단 결과를 바탕으로 실제 대응 전략을 설계합니다. 초기 대응 하나가 결과를 바꿉니다.'}
@@ -289,7 +289,7 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-[800px] mx-auto px-4 pt-6 pb-16">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-navy-900">진단 결과</h2>

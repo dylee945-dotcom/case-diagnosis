@@ -7,9 +7,9 @@ interface Props {
 export default function RoleSelector({ onSelect }: Props) {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      <div className="max-w-2xl mx-auto w-full px-4 py-12 flex-1 flex flex-col justify-center">
+      <div className="max-w-2xl mx-auto w-full px-4 pt-8 pb-10 flex-1 flex flex-col">
         {/* Header */}
-        <div className="mb-10 text-center">
+        <div className="mb-6 text-center">
           <div className="inline-block text-xs font-semibold text-navy-500 uppercase tracking-widest mb-4 px-3 py-1 bg-navy-50 rounded-full border border-navy-100">
             성범죄 사건 진단
           </div>
@@ -89,7 +89,7 @@ export default function RoleSelector({ onSelect }: Props) {
         </div>
 
         {/* Disclaimer */}
-        <div className="bg-white border border-card-border rounded-xl px-5 py-4 text-xs text-navy-500 leading-relaxed">
+        <div className="bg-white border border-card-border rounded-xl px-5 py-3.5 text-[13px] text-navy-500 leading-relaxed">
           이 서비스는 법률 정보 제공을 목적으로 합니다. 진단 결과는 참고 자료이며, 실제 법적 판단은 반드시 변호사와 상담하시기 바랍니다.
         </div>
       </div>

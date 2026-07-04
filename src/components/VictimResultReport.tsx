@@ -323,7 +323,7 @@ function ConsultationCTA() {
 // ─── Main ─────────────────────────────────────────────────
 export default function VictimResultReport({ selectedCrimes, stageResult, answers, onReset }: Props) {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6">
+    <div className="max-w-[800px] mx-auto px-4 pt-6 pb-16">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-xl font-bold text-navy-900">진단 결과 (피해자)</h2>

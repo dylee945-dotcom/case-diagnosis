@@ -71,7 +71,7 @@ export default function QuestionFlow({
   const progressPct = (overallCurrent / overallTotal) * 100
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8">
       {/* Progress */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-2">

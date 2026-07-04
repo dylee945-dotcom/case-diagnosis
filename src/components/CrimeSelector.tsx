@@ -31,7 +31,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
   const isVictim = role === 'victim'
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-[720px] mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-navy-900 mb-2">
           {isVictim ? '피해 혐의를 선택하세요' : '혐의 유형을 선택하세요'}
@@ -45,7 +45,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
         </p>
       </div>
 
-      <div className="space-y-6 mb-8">
+      <div className="space-y-8 mb-8">
         {CRIME_GROUPS.map((group) => {
           const groupCrimes = group.ids
             .map((id) => CRIMES.find((c) => c.id === id))
@@ -64,7 +64,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
                       key={crime.id}
                       onClick={() => onToggle(crime.id)}
                       className={`
-                        w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-150
+                        w-full text-left px-4 py-3 rounded-xl border-2 transition-all duration-150
                         ${isSelected
                           ? 'border-navy-900 bg-navy-50'
                           : 'border-card-border bg-white hover:border-navy-300 hover:shadow-card'
@@ -91,7 +91,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
                               <span className="text-xs bg-navy-900 text-white px-2 py-0.5 rounded-full">선택됨</span>
                             )}
                           </div>
-                          <div className="text-xs text-navy-400 mt-0.5">{crime.law}</div>
+                          <div className="text-xs text-navy-500 mt-0.5">{crime.law}</div>
                         </div>
                       </div>
                     </button>
@@ -103,7 +103,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
         })}
       </div>
 
-      <div className="flex items-center justify-between sticky bottom-4">
+      <div className="flex items-center justify-between">
         <span className="text-sm text-navy-500">
           {selected.length === 0 ? '혐의를 선택해 주세요' : `${selected.length}개 선택됨`}
         </span>
