@@ -1,13 +1,5 @@
 import type { CrimeType, VictimAnalysis, IndictmentLevel } from '../types'
-
-function a(crimeId: CrimeType, all: Record<string, string>): Record<string, string> {
-  const prefix = `${crimeId}:`
-  const result: Record<string, string> = {}
-  for (const [k, v] of Object.entries(all)) {
-    if (k.startsWith(prefix)) result[k.slice(prefix.length)] = v
-  }
-  return result
-}
+import { crimeAnswers as a } from '../utils/answers'
 
 function clamp(n: number): IndictmentLevel {
   return Math.max(0, Math.min(3, Math.round(n))) as IndictmentLevel
@@ -74,7 +66,7 @@ const ANALYSIS: Record<CrimeType, (all: Record<string, string>) => VictimAnalysi
       settlementRange,
       settlementFactors,
       note: '불법촬영은 피해 영상 존재 자체가 핵심 증거입니다. 영상이 있다면 기소 가능성이 매우 높아집니다.',
-      settlementNote: '합의는 형사 처벌의사를 철회하는 효력이 있습니다. 합의 전 변호사와 반드시 상담하세요.',
+      settlementNote: '합의(처벌불원)는 양형에 크게 반영되지만, 성범죄는 합의만으로 처벌을 면할 수 없습니다. 합의 전 변호사와 반드시 상담하세요.',
     }
   },
 

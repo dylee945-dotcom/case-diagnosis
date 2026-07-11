@@ -1,4 +1,5 @@
 import type { CrimeType, Stage } from '../types'
+import { crimeAnswers } from './answers'
 
 type HeadlineEntry = { trigger: string; text: string }
 type HeadlineMap = Partial<Record<Stage, HeadlineEntry[]>>
@@ -374,15 +375,6 @@ const HEADLINES: Record<CrimeType, Record<string, HeadlineMap>> = {
   },
 }
 
-function getAnswerKey(answers: Record<string, string>, crimeId: CrimeType): Record<string, string> {
-  const prefix = `${crimeId}:`
-  const result: Record<string, string> = {}
-  for (const [k, v] of Object.entries(answers)) {
-    if (k.startsWith(prefix)) result[k.slice(prefix.length)] = v
-  }
-  return result
-}
-
 function buildTriggers(crimeId: CrimeType, crimeAnswers: Record<string, string>): string[] {
   const triggers: string[] = []
 
@@ -492,8 +484,7 @@ export function getHeadline(
   stage: Stage,
   answers: Record<string, string>
 ): string {
-  const crimeAnswers = getAnswerKey(answers, crimeId)
-  const triggers = buildTriggers(crimeId, crimeAnswers)
+  const triggers = buildTriggers(crimeId, crimeAnswers(crimeId, answers))
   const crimeMap = HEADLINES[crimeId]
   if (!crimeMap) return ''
   const dimMap = crimeMap[dimensionId]
@@ -524,8 +515,7 @@ export function getBestHeadline(
   stage: Stage,
   answers: Record<string, string>
 ): { dimension: string; text: string } | null {
-  const crimeAnswers = getAnswerKey(answers, crimeId)
-  const triggers = buildTriggers(crimeId, crimeAnswers)
+  const triggers = buildTriggers(crimeId, crimeAnswers(crimeId, answers))
   const crimeMap = HEADLINES[crimeId]
   if (!crimeMap) return null
 

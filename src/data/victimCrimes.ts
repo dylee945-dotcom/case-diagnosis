@@ -84,6 +84,15 @@ export const VICTIM_CRIMES: VictimCrimeConfig[] = [
         ],
       },
       {
+        id: 'q_profit',
+        text: '유포자가 금전이나 포인트를 받고 유포한 정황이 있나요?',
+        options: [
+          { value: 'unknown', label: '모름 / 확인 안 됨' },
+          { value: 'suspected', label: '그런 정황이 의심됨' },
+          { value: 'confirmed', label: '금전·포인트 수취가 확인됨' },
+        ],
+      },
+      {
         id: 'q_deletion',
         text: '콘텐츠 삭제 조치를 했나요?',
         options: [

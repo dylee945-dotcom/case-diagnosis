@@ -1,13 +1,5 @@
 import type { CrimeType, SentencingConfig, SentencingFactor } from '../types'
-
-function getAnswers(crimeId: CrimeType, allAnswers: Record<string, string>): Record<string, string> {
-  const prefix = `${crimeId}:`
-  const result: Record<string, string> = {}
-  for (const [k, v] of Object.entries(allAnswers)) {
-    if (k.startsWith(prefix)) result[k.slice(prefix.length)] = v
-  }
-  return result
-}
+import { crimeAnswers as getAnswers } from '../utils/answers'
 
 export const SENTENCING: Record<CrimeType, SentencingConfig> = {
   cam: {
@@ -246,7 +238,7 @@ export const SENTENCING: Record<CrimeType, SentencingConfig> = {
         return { typeIdx: 1, rangeLabel: '아청법 경합 — 가중구간 초과', note: '아청법 경합 시 양형기준이 별도 적용됩니다.' }
       }
       const typeIdx = a['q_distribute'] === 'yes' ? 1 : 0
-      return { typeIdx, rangeLabel: '기본구간', note: '반포 행위 여부가 유형 분류의 기준입니다.' }
+      return { typeIdx, rangeLabel: '기본구간', note: '반포 행위 여부에 따라 적용 유형이 달라지며, 개정법상 제작·소지만으로도 처벌 대상입니다.' }
     },
   },
 
@@ -575,7 +567,7 @@ export const SENTENCING: Record<CrimeType, SentencingConfig> = {
         typeName: '직장내 성희롱 (남녀고용평등법 제12조)',
         ranges: [
           { label: '행정 제재', min: '과태료 최대 1,000만 원', max: '시정명령·징계 권고' },
-          { label: '형사 처벌', min: '징역 2년 이하', max: '또는 벌금 2,000만 원 이하' },
+          { label: '불리한 처우 시', min: '징역 3년 이하', max: '또는 벌금 3,000만 원 이하' },
         ],
       },
     ],
@@ -603,7 +595,7 @@ export const SENTENCING: Record<CrimeType, SentencingConfig> = {
     estimateFn: (allAnswers) => {
       const a = getAnswers('workplace', allAnswers)
       const isCriminal = a['q_type'] === 'physical' || a['q_duration'] === 'long' || a['q_report'] === 'labor'
-      let rangeLabel = isCriminal ? '형사 처벌 가능 구간' : '행정 제재 중심 구간'
+      let rangeLabel = isCriminal ? '형사 경합(강제추행 등) 검토 구간' : '행정 제재 중심 구간'
       return { typeIdx: 0, rangeLabel, note: '직장내 성희롱은 형사 처벌보다 행정·민사 제재가 주된 경우가 많습니다. 신체 접촉이 포함된 경우 강제추행 경합 여부를 별도로 검토해야 합니다.' }
     },
   },

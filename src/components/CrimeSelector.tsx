@@ -34,7 +34,7 @@ export default function CrimeSelector({ role, selected, onToggle, onNext }: Prop
     <div className="max-w-[720px] mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-navy-900 mb-2">
-          {isVictim ? '피해 혐의를 선택하세요' : '혐의 유형을 선택하세요'}
+          {isVictim ? '피해 유형을 선택하세요' : '혐의 유형을 선택하세요'}
         </h1>
         <p className="text-navy-500 text-sm leading-relaxed">
           {isVictim
