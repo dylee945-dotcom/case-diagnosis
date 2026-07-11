@@ -111,7 +111,7 @@ const PRECEDENTS: Record<CrimeType, CasePrecedent[]> = {
     {
       profile: '친족 관계 / 반복 / 피해자 진술만 존재',
       outcome: '징역 7년 이상 실형 (특수강간)',
-      details: '친족 강간은 형법 제305조의2 적용으로 법정형 하한 7년. 실형 불가피.',
+      details: '친족관계에 의한 강간은 성폭력처벌법 제5조 적용으로 법정형 하한 7년. 실형 불가피.',
     },
   ],
 

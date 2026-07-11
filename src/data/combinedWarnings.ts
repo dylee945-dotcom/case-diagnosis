@@ -26,7 +26,7 @@ export const COMBINED_WARNINGS: CombinedWarning[] = [
   {
     id: 'cam-plus-dist',
     triggerFn: (crimes: CrimeType[], answers: Record<string, string>) =>
-      crimes.includes('cam') && crimes.includes('dist') ||
+      (crimes.includes('cam') && crimes.includes('dist')) ||
       answers['cam:q_file'] === 'shared',
     severity: 'HIGH',
     title: '촬영과 유포는 각각 별개 범죄로 처벌됩니다',
@@ -68,7 +68,7 @@ export const COMBINED_WARNINGS: CombinedWarning[] = [
     title: '같은 대상에게 두 가지를 동시에 했다면 형량이 누적됩니다',
     triggerReason: () => '통신매체이용음란과 스토킹을 모두 선택하셨기 때문입니다.',
     explanation:
-      '동일 피해자를 대상으로 경합하는 경우 각 범죄 최고형의 1/2 가중 원칙이 적용됩니다.',
+      '동일 피해자를 상대로 한 범행이 경합범으로 처리되면 가장 중한 죄에 정한 형의 2분의 1까지 가중될 수 있습니다.',
     sentenceChange: '단일 죄목 → 경합범 가중 처리',
   },
 ]

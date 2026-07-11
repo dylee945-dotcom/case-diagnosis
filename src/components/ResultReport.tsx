@@ -1,14 +1,12 @@
-import type { CrimeType, RiskLevel, StageResult, Role } from '../types'
+import type { CrimeType, RiskLevel, StageResult } from '../types'
 import { CRIME_MAP } from '../data/crimes'
 import { getActiveWarnings } from '../data/combinedWarnings'
 import { getCasePrecedents } from '../data/casePrecedents'
 import { getBestHeadline } from '../utils/headlineGenerator'
-import { getStageBadgeColor, getVictimStageLabel, getAccusedStageLabel } from '../utils/stageInference'
-
-const CONSULT_URL = 'https://www.lawtalk.co.kr/directory/profile/7502-%EC%9D%B4%EB%8F%84%EC%97%B0'
+import { getStageBadgeColor, getAccusedStageLabel } from '../utils/stageInference'
+import { CONSULT_URL } from '../constants'
 
 interface Props {
-  role: Role | null
   selectedCrimes: CrimeType[]
   stageResult: StageResult
   answers: Record<string, string>
@@ -42,15 +40,6 @@ const ACCUSED_DOCS = [
     label: '변호인 의견서',
     warning: '구성요건 다툼 포인트가 잘못 기재되면 오히려 불리한 자료로 작용할 수 있습니다.',
     preview: '피의자 ○○○에 대한 혐의와 관련하여 다음과 같이 의견을 제출합니다.\n\n1. 사건의 개요\n2. 구성요건 검토...',
-  },
-]
-
-const VICTIM_DOCS = [
-  {
-    id: 'complaint',
-    label: '고소장',
-    warning: '사실관계 표현이 부정확하거나 과장되면 무고 위험이 생길 수 있습니다. 변호사 검토를 권장합니다.',
-    preview: '고  소  장\n\n고소인: ○○○ (○○○○년생)\n피고소인: ○○○\n\n고소 취지: 피고소인을 아래와 같은 죄명으로 고소하오니...',
   },
 ]
 
@@ -133,22 +122,21 @@ function CasePrecedentsSection({ crimeId }: { crimeId: CrimeType }) {
         ))}
       </div>
       <div className="mt-3 text-xs text-navy-400 leading-relaxed">
-        위 사례는 공개된 판결문 기준으로 구성한 참고 자료입니다. 실제 선고형은 재판부 재량에 따라 달라집니다.
+        위 사례는 유사 사건의 일반적인 판결 경향을 참고하여 구성한 예시로, 특정 사건의 실제 판결이 아닙니다. 실제 선고형은 재판부 재량에 따라 달라집니다.
       </div>
     </div>
   )
 }
 
-function CrimeSection({ crimeId, stageResult, answers, isVictim }: {
+function CrimeSection({ crimeId, stageResult, answers }: {
   crimeId: CrimeType
   stageResult: StageResult
   answers: Record<string, string>
-  isVictim: boolean
 }) {
   const crime = CRIME_MAP[crimeId]
   if (!crime) return null
 
-  const headline = isVictim ? null : getBestHeadline(crimeId, stageResult.stage, answers)
+  const headline = getBestHeadline(crimeId, stageResult.stage, answers)
 
   return (
     <div className="mb-8">
@@ -163,9 +151,7 @@ function CrimeSection({ crimeId, stageResult, answers, isVictim }: {
 
       {/* Risk dimensions */}
       <div className="card mb-4">
-        <div className="section-label">
-          {isVictim ? '피해 심각성 분석' : '5개 차원 리스크 분석'}
-        </div>
+        <div className="section-label">5개 차원 리스크 분석</div>
         <div className="space-y-4">
           {crime.dimensions.map((dim) => {
             const level = dim.scoringFn(answers)
@@ -184,13 +170,9 @@ function CrimeSection({ crimeId, stageResult, answers, isVictim }: {
 
       {/* Sentencing — replaced with consultation button */}
       <div className="card mb-4">
-        <div className="section-label">
-          {isVictim ? '가해자에게 예상되는 처벌 수위' : '양형기준 기반 예상 권고 구간'}
-        </div>
+        <div className="section-label">양형기준 기반 예상 권고 구간</div>
         <p className="text-xs text-navy-500 mb-4 leading-relaxed">
-          {isVictim
-            ? '처벌 수위는 확보된 증거와 고소 전략에 따라 크게 달라집니다. 변호사 상담을 통해 정확한 분석을 받아보세요.'
-            : '예상 처벌 수위는 사건의 구체적 사실관계, 증거, 법률 전략에 따라 크게 달라집니다. 변호사 상담을 통해 정확한 분석을 받아보세요.'}
+          예상 처벌 수위는 사건의 구체적 사실관계, 증거, 법률 전략에 따라 크게 달라집니다. 변호사 상담을 통해 정확한 분석을 받아보세요.
         </p>
         <a
           href={CONSULT_URL}
@@ -209,8 +191,8 @@ function CrimeSection({ crimeId, stageResult, answers, isVictim }: {
 }
 
 // ─── Documents section (단일 통합) ───────────────────────
-function DocumentsSection({ isVictim }: { isVictim: boolean }) {
-  const docs = isVictim ? VICTIM_DOCS : ACCUSED_DOCS
+function DocumentsSection() {
+  const docs = ACCUSED_DOCS
   return (
     <div className="mb-6">
       <div className="section-label mb-3">관련 문서 초안</div>
@@ -248,22 +230,15 @@ function DocumentsSection({ isVictim }: { isVictim: boolean }) {
 }
 
 // ─── Consultation CTA ─────────────────────────────────────
-function ConsultationCTA({ role }: { role: Role | null }) {
-  const isVictim = role === 'victim'
+function ConsultationCTA() {
   return (
     <div className="bg-navy-900 rounded-2xl p-5 mb-6 text-white">
       <div className="text-xs font-semibold uppercase tracking-widest mb-2.5" style={{ color: 'rgba(255,255,255,0.45)' }}>
         변호사 상담
       </div>
-      <h3 className="text-lg font-bold mb-2">
-        {isVictim
-          ? '지금 바로 변호사와 상담하세요'
-          : '지금 상황을 변호사와 함께 점검하세요'}
-      </h3>
+      <h3 className="text-lg font-bold mb-2">지금 상황을 변호사와 함께 점검하세요</h3>
       <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(255,255,255,0.65)' }}>
-        {isVictim
-          ? '신고 방법부터 증거 확보, 피해자 지원 제도까지 — 첫 상담에서 모두 안내해 드립니다.'
-          : '진단 결과를 바탕으로 실제 대응 전략을 설계합니다. 초기 대응 하나가 결과를 바꿉니다.'}
+        진단 결과를 바탕으로 실제 대응 전략을 설계합니다. 초기 대응 하나가 결과를 바꿉니다.
       </p>
       <a
         href={CONSULT_URL}
@@ -278,14 +253,11 @@ function ConsultationCTA({ role }: { role: Role | null }) {
 }
 
 // ─── Main ─────────────────────────────────────────────────
-export default function ResultReport({ role, selectedCrimes, stageResult, answers, onReset }: Props) {
+export default function ResultReport({ selectedCrimes, stageResult, answers, onReset }: Props) {
   const warnings = getActiveWarnings(selectedCrimes, answers)
-  const isVictim = role === 'victim'
 
   function getStageLabel(stage: string) {
-    return isVictim
-      ? getVictimStageLabel(stage as Parameters<typeof getVictimStageLabel>[0])
-      : getAccusedStageLabel(stage as Parameters<typeof getAccusedStageLabel>[0])
+    return getAccusedStageLabel(stage as Parameters<typeof getAccusedStageLabel>[0])
   }
 
   return (
@@ -315,7 +287,7 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
                 <div className="text-xs text-navy-400 mt-0.5">{crime.law}</div>
               </div>
               <span className="text-xs bg-navy-100 text-navy-700 px-2 py-1 rounded-full font-medium flex-shrink-0">
-                {isVictim ? '피해 분석' : '혐의 분석'}
+                혐의 분석
               </span>
             </div>
             {crime.notice && (
@@ -327,9 +299,7 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
 
       {/* Stage badge */}
       <div className={`rounded-xl border px-5 py-4 mb-5 ${getStageBadgeColor(stageResult.stage)}`}>
-        <div className="text-xs font-semibold opacity-60 mb-1">
-          {isVictim ? '현재 상황 추정' : '현재 단계 추정'}
-        </div>
+        <div className="text-xs font-semibold opacity-60 mb-1">현재 단계 추정</div>
         <div className="font-bold text-lg leading-snug">
           {stageResult.uncertain && stageResult.secondaryStage
             ? <><span className="font-extrabold">{getStageLabel(stageResult.stage)}</span> ~ {getStageLabel(stageResult.secondaryStage)}</>
@@ -339,23 +309,17 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
         {stageResult.note && (
           <div className="text-xs mt-2 opacity-70 leading-relaxed">{stageResult.note}</div>
         )}
-        <div className="text-xs opacity-40 mt-1">
-          {isVictim
-            ? '실제 수사 진행 상황은 담당 수사관에게 직접 확인하세요.'
-            : '실제 단계는 담당 수사관 확인이 필요합니다.'}
-        </div>
+        <div className="text-xs opacity-40 mt-1">실제 단계는 담당 수사관 확인이 필요합니다.</div>
       </div>
 
-      {/* Overall risk — 피의자만 표시 */}
-      {!isVictim && <OverallRiskSummary crimes={selectedCrimes} answers={answers} />}
+      {/* Overall risk */}
+      <OverallRiskSummary crimes={selectedCrimes} answers={answers} />
 
       {/* Combined warnings */}
       {warnings.length > 0 && (
         <div className="mb-6">
           <div className="text-sm font-bold text-navy-900 mb-3">
-            {isVictim
-              ? '가해자에게 적용될 수 있는 추가 혐의'
-              : '지금 상황에서 추가로 문제될 수 있는 것이 있습니다'}
+            지금 상황에서 추가로 문제될 수 있는 것이 있습니다
           </div>
           <div className="space-y-3">
             {warnings.map((w) => {
@@ -367,16 +331,12 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
                     <h4 className="font-bold text-navy-900 text-sm">{w.title}</h4>
                   </div>
                   <div className="text-xs text-navy-600 mb-2 leading-relaxed">
-                    <span className="font-semibold text-navy-700">
-                      {isVictim ? '관련 근거 —' : '이 경고가 나온 이유 —'}
-                    </span>{' '}
+                    <span className="font-semibold text-navy-700">이 경고가 나온 이유 —</span>{' '}
                     {w.triggerReason(answers)}
                   </div>
                   <p className="text-xs text-navy-700 leading-relaxed mb-3">{w.explanation}</p>
                   <div className="border-t border-black/5 pt-3">
-                    <div className="text-xs text-navy-500 mb-1">
-                      {isVictim ? '가해자 처벌 수위 변화' : '수위 변화'}
-                    </div>
+                    <div className="text-xs text-navy-500 mb-1">수위 변화</div>
                     <div className="text-xs text-navy-800 font-semibold leading-relaxed">{w.sentenceChange}</div>
                   </div>
                 </div>
@@ -386,8 +346,8 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
         </div>
       )}
 
-      {/* Consultation CTA — 피의자: 종합 리스크 요약 + 경고 이후 바로 표시 */}
-      {!isVictim && <ConsultationCTA role={role} />}
+      {/* Consultation CTA — 종합 리스크 요약 + 경고 이후 바로 표시 */}
+      <ConsultationCTA />
 
       {/* Per-crime analysis */}
       {selectedCrimes.map((crimeId) => (
@@ -396,12 +356,11 @@ export default function ResultReport({ role, selectedCrimes, stageResult, answer
           crimeId={crimeId}
           stageResult={stageResult}
           answers={answers}
-          isVictim={isVictim}
         />
       ))}
 
       {/* Documents — 1회 통합 표시 */}
-      <DocumentsSection isVictim={isVictim} />
+      <DocumentsSection />
 
       {/* Footer */}
       <div className="card-sm text-xs text-navy-500 leading-relaxed mb-4">

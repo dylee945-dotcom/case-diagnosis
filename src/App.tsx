@@ -224,7 +224,6 @@ export default function App() {
 
         {state.step === 'result' && state.stageResult && state.role !== 'victim' && (
           <ResultReport
-            role={state.role}
             selectedCrimes={state.selectedCrimes}
             stageResult={state.stageResult}
             answers={state.answers}
